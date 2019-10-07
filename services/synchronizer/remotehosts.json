@@ -1,0 +1,7 @@
+{
+    "<remoteserver>": {
+        "user": "<myusername>",
+        "dir": "/path/to/sync_target/",
+        "domain": "foo.bar.fr"
+    }
+}
