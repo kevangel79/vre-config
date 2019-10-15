@@ -1,0 +1,37 @@
+version: '3.3'
+
+# Note that for Authentication using WebDAV, this host must
+# be set as a "trusted domain" on the NextCloud instance!
+
+services:
+  hub:
+   image: registry-sdc.argo.grnet.gr/vre-jhub:20190923 # TODO
+   restart: always
+   ports:
+    - 443:8000
+   volumes:
+     # Docker socket is necessary to spawn notebooks:
+     - /var/run/docker.sock:/var/run/docker.sock
+     # Config:
+     - ./jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py
+     # SSL certs:
+     - /path/to/ssl/certs/cert_and_chain.pem:/srv/jupyterhub/ssl/certs/myhost_cert_and_chain.crt:rw
+     - /path/to/ssl/private/priv.key:/srv/jupyterhub/ssl/private/myhost.key:rw
+     # Where nextcloud is synced to:
+     - /path/to/sync_target/:/usr/share/userdirectories/:rw
+   networks:
+     - vre
+   environment:
+      DOCKER_JUPYTER_IMAGE: abarth/divand-jupyterhub:latest
+      DOCKER_NETWORK_NAME: vre
+      HUB_IP: hub # this is this service's name!
+      JUPYTERHUB_CRYPT_KEY: "xxx"
+   labels:
+    - "JupyterHub for DIVA"
+
+# Using an external network, because we need to pass the network name to the
+# docker spawner, and if we use an internal one, its name will be prefixed by the
+# compose stack's name.
+networks:
+  vre:
+    external: true
