@@ -1,0 +1,89 @@
+version: '3.3'
+
+services:
+
+  # PROXY:
+  nginx:
+    image: nginx
+    restart: always
+    volumes:
+      - ./nginx_proxy.conf:/etc/nginx/conf.d/default.conf
+      - ./healthcheck_nginx.sh:/bin/healthcheck.sh
+      - /path/to/ssl/certs/cert_and_chain.crt:/etc/ssl/certs/myhost.crt:ro
+      - /path/to/ssl/private/prov.key:/etc/ssl/private/myhost.key:ro
+    ports:
+      - "8191:443"
+    networks:
+      - vre
+    depends_on:
+      - webodv
+    healthcheck:
+      test: ["CMD", "/bin/healthcheck.sh"]
+      interval: 60s
+      timeout: 30s
+      retries: 5
+
+  webodv:
+   image: registry-sdc.argo.grnet.gr/webodv_qc_v2:20190925-1
+   restart: always
+   depends_on:
+    - db_odv
+   ports:
+    - "80"
+   volumes:
+     # Data volume: This contains read-only ODV data.
+     # Note: ODV data must be directly in this, not additional directory!
+     - /path/to/static_data/data_for_ODV/extractor/ODV_Data:/var/www/html/ODV_Data:ro
+     - /path/to/static_data/data_for_ODV/basemaps/ODV:/root/ODV:rw
+     - /path/to/sync_target/:/var/www/html/webodv/storage/app/nc/:rw
+   networks:
+    - vre
+   environment:
+    # 1. Does the service run behind a reverse proxy?
+    # If , makes sure that the FORCE_ROOT_URL is used in all HTML links,
+    # HTML forms etc. (served by Laravel) if service runs behind a
+    # reverse proxy, i.e. forceRootUrl() is enforced in Laravel.
+    # Please use 1 for true and 0 for false!
+    REVERSE_PROXY: 1 # 1=true!
+    #
+    # 2. This URL is used in HTML links, HTML forms etc. (served by
+    # Laravel) if service runs behind a reverse proxy, i.e. forceRootUrl()
+    # is enforced in Laravel.
+    # Please include the protocol, i.e. "https://".
+    # Note: Only used if REVERSE_PROXY is true.
+    FORCE_ROOT_URL: 'https://xxxxx.xxx.xx:8191'
+    # 
+    # 3. This makes sure that https is used in HTML links, HTML forms etc.
+    # (served by Laravel) if service runs behind a reverse proxy, i.e.
+    # forceScheme() is enforced in Laravel.
+    # Note: Only used if REVERSE_PROXY is true.
+    FORCE_SCHEME: 'https'
+   labels:
+     - "webODV in VRE"
+   healthcheck:
+    test: ["CMD", "curl", "-f", "http://localhost:80/sdc"]
+    interval: 60s
+    timeout: 30s
+    retries: 5
+
+  db_odv:
+   image: mysql/mysql-server:8.0.0
+   restart: always
+   environment:
+    MYSQL_ROOT_PASSWORD: XXXX  # please adapt!
+    MYSQL_DATABASE: XXXXX      # please adapt!
+    MYSQL_USER: XXXX           # please adapt!
+    MYSQL_PASSWORD: XXXXX      # please adapt!
+   networks:
+    - vre
+   volumes:
+    - ./mysql_resources/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+   healthcheck:
+    test: "/usr/bin/mysql --user=XXXXX --password=XXXXX --silent --execute \"SELECT 1;\"" #please adapt!
+    interval: 30s
+    timeout: 10s
+    retries: 5
+
+networks:
+  vre:
+    external: true
