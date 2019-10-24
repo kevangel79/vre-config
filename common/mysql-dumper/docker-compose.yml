@@ -3,7 +3,7 @@ version: '3.3'
 services:
 
   dumper:
-   image: mysql-cron:20191024
+   image: registry-sdc.argo.grnet.gr/mysql-cron:20191024
    restart: always
    volumes:
     - /path/to/backups/dashboard_mysql/:/srv/mysql/backup
