@@ -59,6 +59,11 @@ if not var == 'y':
 # Stopping and deleting.
 # This takes some time.
 n = len(which_to_delete)
+
+if n == 0:
+    print('No containers to be stopped. Bye!')
+    sys.exit()
+
 print('Stopping and removing %s containers. This will take some seconds...' % n)
 
 for i in xrange(n):
