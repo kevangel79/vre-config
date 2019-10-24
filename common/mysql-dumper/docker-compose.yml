@@ -1,0 +1,30 @@
+version: '3.3'
+
+services:
+
+  dumper:
+   image: mysql-cron:20191024
+   restart: always
+   volumes:
+    - /path/to/backups/dashboard_mysql/:/srv/mysql/backup
+    # Using default script, so commented this out:
+    #- ./script.sh:/script.sh
+   environment:
+    CRON_SCHEDULE: '4,34 * * * *' # optional, defaults to hourly.
+    MAX_SECONDS_SINCE_LAST: 1805 # half hour
+    MYSQL_DATABASE: vre
+    MYSQL_USER: xxxx
+    MYSQL_PASSWORD: xxxx
+    # optional
+    MYSQL_PORT: 3306
+    MYSQL_HOST: 'db'
+   networks:
+    - vre
+   healthcheck:
+    test: "/healthcheck.sh"
+    interval: 30s
+
+networks:
+  vre
+    external: true
+
