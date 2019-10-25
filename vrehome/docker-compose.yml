@@ -19,6 +19,27 @@ services:
    networks:
     - vre
 
+  dumper:
+   image: mysql-cron:20191024
+   restart: always
+   volumes:
+    - /path/to/backups/dashboard_mysql/:/srv/mysql/backup
+   environment:
+    CRON_SCHEDULE: '10 * * * *' #optional, defaults to hourly.
+    MAX_SECONDS_SINCE_LAST: 3610
+    MYSQL_DATABASE: xxx
+    MYSQL_USER: xxx
+    MYSQL_PASSWORD: xxx
+    # optional
+    #MYSQL_PORT: 3306
+    #MYSQL_HOST: 'db'
+   networks:
+    - vre
+   healthcheck:
+     test: "/healthcheck.sh"
+     interval: 300s
+
+
   #################
   ### VRE entry ###
   #################
