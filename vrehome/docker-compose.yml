@@ -140,7 +140,7 @@ services:
   workspace:
    image: registry-sdc.argo.grnet.gr/vre_workspace:20190919-1
    volumes:
-     - /path/to/nextcloud_data:/var/www/html/data:rw
+     - /path/to/nextcloud_all:/var/www/html:rw
    restart: always
    ports:
      - "81:80"
