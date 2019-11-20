@@ -54,7 +54,7 @@ services:
     - vre
    environment:
     REVERSE_PROXY: 1
-    VRE_SERVICES: extractor,import,qc,kill_wsodv,diva,viz,erddap
+    VRE_SERVICES: extractor,import,qc,kill_wsodv,diva,viz,erddap,fileselector
     NUM_DISTR: 1
     #
     # 1. Where odv can reach nextcloud over WebDAV from inside the ODV container
@@ -74,6 +74,7 @@ services:
     # Must be reachable from the client, as they are integrated using iframes
     # Can be comma-separated lists
     workspace: https://manatee.abc.org:8001/index.php/apps/loginviapost/login
+    fileselector: https://manatee.abc.org:8004,https://seagull.xyz.org:8004
     diva: https://dolphin.abc.org:8000,https://seagull.xyz.org:8000
     import: https://seahorse.abc.org:8191/import_service_init,https://seagull.xyz.org:8191/import_service_init
     extractor: https://seahorse.abc.org:8191/sdc,https://seagull.xyz.org:8191/sdc
