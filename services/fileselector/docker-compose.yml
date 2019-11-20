@@ -1,0 +1,15 @@
+version: '2'
+services:
+  fileselector:
+   image: registry-sdc.argo.grnet.gr/fileselector:20191106-1
+   ports:
+    - 7788:80
+   volumes:
+    - /home/woody/Docker/sdc_vre/nc_sync:/var/www/html/fileselector/storage/app/data
+   networks:
+    - sdcvre_vre-dev
+   environment:
+    dashboard_url: http://172.18.11.5 #this is needed for the service_auth                                                                     
+networks:
+   sdcvre_vre-dev:
+     external: true
