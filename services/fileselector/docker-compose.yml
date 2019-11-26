@@ -9,7 +9,7 @@ services:
    networks:
     - vre
    environment:
-    dashboard_url: http://172.18.11.5 #this is needed for the service_auth                                                                     
+    dashboard_url: https://manatee.gr # this is needed for the service_auth                                                                     
 networks:
    sdcvre_vre-dev:
      external: true
