@@ -44,7 +44,7 @@ services:
   ### VRE entry ###
   #################
   dashboard:
-   image: registry-sdc.argo.grnet.gr/sdc_vre:20190919-1
+   image: registry-sdc.argo.grnet.gr/vre_dashboard:20191106-1
    restart: always
    depends_on:
     - db
