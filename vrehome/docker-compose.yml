@@ -61,10 +61,10 @@ services:
     # Use http://workspace... if both containers are in same docker-network
     # Use https://<server> if nextcloud runs somewhere outside
     NEXTCLOUD_URL_SAMEHOST: http://workspace/remote.php/webdav/
-    NEXTCLOUD_URL: https://manatee.abc.org/remote.php/webdav/
+    NEXTCLOUD_URL: https://manatee.org/remote.php/webdav/
     # 
     # 2. Where the VRE tells Unity/B2ACCESS to call us back during authentication
-    UNITY_REDIRECT: https://manatee.abc.org/vre_login/unity/callback
+    UNITY_REDIRECT: https://manatee.org/vre_login/unity/callback
     # 
     # 3. Where the VRE can reach the nextcloud (via SSH) to create a user during
     # registration (both local registration and Marine-ID authentication)
@@ -73,15 +73,15 @@ services:
     # 4. URLs of the VRE services
     # Must be reachable from the client, as they are integrated using iframes
     # Can be comma-separated lists
-    workspace: https://manatee.abc.org:8001/index.php/apps/loginviapost/login
-    fileselector: https://manatee.abc.org:8004,https://seagull.xyz.org:8004
-    diva: https://dolphin.abc.org:8000,https://seagull.xyz.org:8000
-    import: https://seahorse.abc.org:8191/import_service_init,https://seagull.xyz.org:8191/import_service_init
-    extractor: https://seahorse.abc.org:8191/sdc,https://seagull.xyz.org:8191/sdc
-    qc: https://seahorse.abc.org:8191/quality_control_start,https://seagull.xyz.org:8191/quality_control_start
-    viz: https://seahorse.abc.org:8003,https://seagull.xyz.org:8003
-    kill_wsodv: https://seahorse.abc.org:8191/kill_wsodv,https://seagull.xyz.org:8191/kill_wsodv
-    erddap: http://seahorse.abc.org:8002/erddap,http://seagull.xyz.org:8002/erddap
+    workspace: https://manatee.org:8001/index.php/apps/loginviapost/login
+    fileselector: https://manatee.org:8004,https://seagull.org:8004 # ???
+    diva: https://seahorse.org:8000,https://seagull.org:8000
+    import: https://seahorse.org:8191/import_service_init,https://seagull.org:8191/import_service_init
+    extractor: https://seahorse.org:8191/sdc,https://seagull.org:8191/sdc
+    qc: https://seahorse.org:8191/quality_control_start,https://seagull.org:8191/quality_control_start
+    viz: https://seahorse.org:8003,https://seagull.org:8003
+    kill_wsodv: https://seahorse.org:8191/kill_wsodv,https://seagull.org:8191/kill_wsodv
+    erddap: http://seahorse.org:8002/erddap,http://seagull.org:8002/erddap
     # 
     # 5. Does the service run behind a reverse proxy?
     # If , makes sure that the FORCE_ROOT_URL is used in all HTML links,
@@ -95,7 +95,7 @@ services:
     # is enforced in Laravel.
     # Please include the protocol, i.e. "https://".
     # Note: Only used if REVERSE_PROXY is true.
-    FORCE_ROOT_URL: 'https://manatee.abc.org'
+    FORCE_ROOT_URL: 'https://manatee.org'
     # 
     # 7. This makes sure that https is used in HTML links, HTML forms etc.
     # (served by Laravel) if service runs behind a reverse proxy, i.e.
@@ -149,11 +149,11 @@ services:
      - vre
    environment:
     # Make sure that dashboard is allowed to access nextcloud:
-    trusted_domains: 'manatee.abc.org'
+    trusted_domains: 'manatee.org'
     # Make sure that the automatic detection of hostnames for redirects
     # (done by nextcloud) works also if nextcloud runs behing a reverse proxy.
     # Please see: https://github.com/nextcloud/server/blob/master/config/config.sample.php#L436
-    overwritehost: 'manatee.abc.org:8001'
+    overwritehost: 'manatee.org:8001'
     overwriteprotocol: 'https'
 
   #############
