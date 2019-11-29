@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   syncer:
-   image: registry-sdc.argo.grnet.gr/syncer:20190930-orca
+   image: registry-sdc.argo.grnet.gr/syncer:20191129-as33 
    restart: always
    ports:
     - 5000:5000
