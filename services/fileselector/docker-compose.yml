@@ -11,5 +11,5 @@ services:
    environment:
     dashboard_url: https://manatee.gr # this is needed for the service_auth                                                                     
 networks:
-   sdcvre_vre-dev:
+   vre:
      external: true
