@@ -2,7 +2,7 @@ version: '2'
 
 services:
   fileselector:
-   image: registry-sdc.argo.grnet.gr/fileselector:20191106-1
+   image: registry-sdc.argo.grnet.gr/fileselector:20191206-1
    #ports:
    # - 7788:80
    volumes:
@@ -11,6 +11,7 @@ services:
     - vre
    environment:
     dashboard_url: https://manatee.gr # this is needed for the service_auth
+    FORCE_SCHEME: 'https'
 
   proxy_for_fileselector:
     image: nginx
