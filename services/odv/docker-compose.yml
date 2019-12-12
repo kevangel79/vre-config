@@ -24,18 +24,21 @@ services:
       retries: 5
 
   webodv:
-   image: registry-sdc.argo.grnet.gr/webodv_qc_v2:20190925-1
+   image: registry-sdc.argo.grnet.gr/vre_odv:20191210-1
    restart: always
    depends_on:
     - db_odv
    ports:
     - "80"
    volumes:
-     # Data volume: This contains read-only ODV data.
-     # Note: ODV data must be directly in this, not additional directory!
-     - /path/to/static_data/data_for_ODV/extractor/ODV_Data:/var/www/html/ODV_Data:ro
-     - /path/to/static_data/data_for_ODV/basemaps/ODV:/root/ODV:rw
-     - /path/to/sync_target/:/var/www/html/webodv/storage/app/nc/:rw
+       # ODV installation
+       - ./odv_5.1.7beta_linux-amd64_ubuntu-18.04:/var/www/html/odv_software:ro
+       # ODV bathy data
+       - ./ODV:/home/woody/Documents/ODV:rw
+       # webODV settings
+       - ./settings_webodv:/var/www/html/webodv/storage/app:rw
+       # vre mount
+       - /path/to/your/sync/target:/var/www/html/webodv/storage/nc_sync
    networks:
     - vre
    environment:
@@ -58,10 +61,14 @@ services:
     # forceScheme() is enforced in Laravel.
     # Note: Only used if REVERSE_PROXY is true.
     FORCE_SCHEME: 'https'
+    #
+    # 4. Dashboard URL, for authentication: ODV asks this URL for token
+    # verification.
+    DASHBOARD_URL: 'https://dashboard.argo.grnet.gr'
    labels:
      - "webODV in VRE"
    healthcheck:
-    test: ["CMD", "curl", "-f", "http://localhost:80/sdc"]
+    test: ["CMD", "curl", "-f", "http://localhost:80/webodv"]
     interval: 60s
     timeout: 30s
     retries: 5
@@ -77,7 +84,7 @@ services:
    networks:
     - vre
    volumes:
-    - ./mysql_resources/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    - ./mysql_data_persistent:/var/lib/mysql
    healthcheck:
     test: "/usr/bin/mysql --user=XXXXX --password=XXXXX --silent --execute \"SELECT 1;\"" #please adapt!
     interval: 30s
