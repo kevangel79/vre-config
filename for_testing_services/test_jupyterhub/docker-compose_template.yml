@@ -1,0 +1,43 @@
+version: '3.3'
+
+services:
+  testhub:
+   image: jupyterhub_vretest:20200130
+   restart: always
+   ports:
+    - 443:8000   # CHANGE if you don't run this on port 443!
+   volumes:
+     # SSL certs (please adapt):
+     #- /XYZXYZ/ssl/certs/_cert_and_chain.pem:/srv/jupyterhub/ssl/certs/myhost_cert_and_chain.crt:rw
+     #- /XYZXYZ/ssl/private/server.key:/srv/jupyterhub/ssl/private/myhost.key:rw
+     # Docker Socket (needed to spawn containers)
+     - /var/run/docker.sock:/var/run/docker.sock
+     # Config:
+     - ./jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py
+     # Where NextCloud accounts will be mounted:
+     - ./fake_userdirectories:/usr/share/userdirectories/:rw
+   cap_add:
+    - SYS_ADMIN
+   networks:
+     - vre-test
+   environment:
+      TEST_PW: 'changeme!XYZXYZ'
+      DOCKER_JUPYTER_IMAGE: XYZXYZ
+      #DOCKER_JUPYTER_IMAGE: jupyterhub/singleuser:0.8
+      #DOCKER_JUPYTER_IMAGE: abarth/divand-jupyterhub:2020-01-27T1800
+      DOCKER_NETWORK_NAME: vre-test
+      USE_SSL: 'false'
+      RUN_AS_USER: 1000
+      RUN_AS_GROUP: 100
+      HUB_IP: testhub
+      # Needed by JuypterHub, created by: openssl rand -hex 32
+      JUPYTERHUB_CRYPT_KEY: "2632b4f755bf75de26d818747170924385940945054666abb00982395abf986d"
+      HOST_LOCATION_USERDIRS: '/XYZXYZ/fake_userdirectories'
+      USERDIR_INSIDE_CONTAINER: '/home/jovyan/work' # or any place where you want the userdata to be mounted!
+
+   labels:
+    - "JupyterHub for service test"
+
+networks:
+  vre-test:
+    external: true
