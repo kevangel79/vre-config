@@ -216,6 +216,14 @@ c.VRETestAuthenticator.custom_html = """<form action="/hub/login?next=" method="
           id="vre_displayname_input"
           value = "Grace Hopper"
         />
+        <label for='fileselection_path_input'>File selection (path):</label>
+        <input
+          type="text"
+          class="form-control"
+          name="fileselection_path"
+          id="fileselection_path_input"
+          value = "/Photos/Hummingbird.jpg"
+        />
 
         <input
           type="submit"
