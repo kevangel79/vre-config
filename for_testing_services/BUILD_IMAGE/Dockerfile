@@ -16,6 +16,6 @@ RUN cd ./jupyterhub-vretestauthenticator && ls -lpah && python setup.py install 
 # This is only to check if it built correctly:
 RUN python -c "import vretestauthenticator"
 
-# docker build -t jupyterhub_vretest:20200130 .
-# docker build -t registry-sdc.argo.grnet.gr/jupyterhub_vretest:20200120
-# docker push registry-sdc.argo.grnet.gr/jupyterhub_vretest:20200120
+# docker build -t jupyterhub_vretest:20200304 .
+# docker build -t registry-sdc.argo.grnet.gr/jupyterhub_vretest:20200304
+# docker push registry-sdc.argo.grnet.gr/jupyterhub_vretest:20200304

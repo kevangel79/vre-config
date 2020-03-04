@@ -237,6 +237,9 @@ class VRETestAuthenticator(jupyterhub.auth.Authenticator):
         USERDIR_OWNER_ID = int(USERDIR_OWNER_ID)
         USERDIR_GROUP_ID = int(USERDIR_GROUP_ID)
         LOGGER.info('Will chown to : "%s:%s" (%s, %s)' % (USERDIR_OWNER_ID, USERDIR_GROUP_ID, type(USERDIR_OWNER_ID), type(USERDIR_GROUP_ID)))
+        # See c.JupyterHub.base_url in JupyterHub URL Scheme docs
+        # https://test-jupyterhub.readthedocs.io/en/latest/reference/urls.html
+        BASE_URL = os.environ.get('BASE_URL', '')
             
         # Prepare user directory:
         # This is the directory where the docker spawner will mount the <username>_sync directory!
@@ -257,6 +260,7 @@ class VRETestAuthenticator(jupyterhub.auth.Authenticator):
         spawner.environment['WEBDAV_PASSWORD'] = auth_state['webdav_mount_password']
         spawner.environment['WEBDAV_URL'] = auth_state['webdav_mount_url']
         spawner.environment['FILESELECTION_PATH'] = auth_state['fileselection_path']
+        spawner.environment['BASE_URL'] = BASE_URL
 
         # Done!
         LOGGER.debug("Finished pre_spawn_start()...")
