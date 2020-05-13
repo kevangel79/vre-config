@@ -1,5 +1,13 @@
 #!/usr/bin/python
 
+#===================================================================
+# A script that generates a json file with the docker health status
+# of the running containers in the server
+# 
+# author: themis@grnet.gr
+# GRNET
+#===================================================================
+
 import json
 import sys
 import argparse
